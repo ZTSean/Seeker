@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Seeker</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_home">Home</string>
+    <string name="navigation_drawer_open">Navigation open</string>
+    <string name="navigation_drawer_close">Navigation close</string>
+    <string name="map_activity_name">Map</string>
+    <string name="login_instruction">Choose user:</string>
+</resources>
