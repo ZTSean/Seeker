@@ -1,9 +1,7 @@
 package com.gamedesign.seeker;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,15 +47,19 @@ public class ThemeFragment extends android.support.v4.app.Fragment{
         public void onClick(View v) {
             final FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
 
+            Bundle args = getArguments();
+            NewGameFragment tmp = new NewGameFragment();
+            tmp.setArguments(args);
+
             switch (v.getId()) {
                 case R.id.Romantic:
-                    ft.replace(R.id.fragment, new FloatingMenuFragment()).addToBackStack(null).commit();
+                    ft.replace(R.id.fragment, tmp).commit();
                     break;
                 case R.id.Celebratory:
-                    ft.replace(R.id.fragment, new FloatingMenuFragment()).addToBackStack(null).commit();
+                    ft.replace(R.id.fragment, tmp).commit();
                     break;
                 case R.id.Seasonal:
-                    ft.replace(R.id.fragment, new FloatingMenuFragment()).addToBackStack(null).commit();
+                    ft.replace(R.id.fragment, tmp).commit();
                     break;
             }
         }

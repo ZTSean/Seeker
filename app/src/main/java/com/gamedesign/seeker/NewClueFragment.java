@@ -1,16 +1,21 @@
 package com.gamedesign.seeker;
 
-import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
@@ -18,10 +23,7 @@ import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.ui.PlacePicker;
 
-import java.io.File;
-import java.io.IOException;
-import java.sql.Date;
-import java.text.SimpleDateFormat;
+import org.w3c.dom.Text;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -29,7 +31,7 @@ import static android.app.Activity.RESULT_OK;
  * Created by Zixiao on 10/17/2016.
  */
 
-public class FloatingMenuFragment extends android.support.v4.app.Fragment {
+public class NewClueFragment extends android.support.v4.app.Fragment {
 
     private int status; // Google Play Services status: whether it is available
     private static final int CAMERA_PIC_REQUEST = 1;
@@ -41,15 +43,22 @@ public class FloatingMenuFragment extends android.support.v4.app.Fragment {
     private FloatingActionButton fab_edit;
     private FloatingActionButton fab_map;
     private FloatingActionButton fab_camera;
+    private Button button_done;
+
+    private Clue clue;
+    private long game_id;
+    private AlertDialog ad;
 
     // Temporary image store field
     private ImageView imageView;
     private String mCurrentPhotoPath;
 
+    private DataBaseHelper dbHelper;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.floating_menu_fragment, container, false);
+        return inflater.inflate(R.layout.new_clue_fragment, container, false);
     }
 
     @Override
@@ -57,7 +66,6 @@ public class FloatingMenuFragment extends android.support.v4.app.Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         // Found corresponding view in layout file
-        imageView = (ImageView) view.findViewById(R.id.imagePreview);
         menu = (FloatingActionMenu) view.findViewById(R.id.floating_menu);
 
         fab_edit = (FloatingActionButton) view.findViewById(R.id.fab_edit);
@@ -65,6 +73,57 @@ public class FloatingMenuFragment extends android.support.v4.app.Fragment {
         fab_map = (FloatingActionButton) view.findViewById(R.id.fab_map);
 
         menu.hideMenuButton(false);
+        menu.setClosedOnTouchOutside(true);
+
+        final FragmentManager ft = getActivity().getSupportFragmentManager();
+        Bundle args = getArguments();
+        dbHelper = new DataBaseHelper(getActivity().getApplicationContext());
+        clue = new Clue();
+        game_id = args.getLong(GamesFragment.GAME_ID);
+
+        // Hint input dialog builder
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Enter Hint");
+        final EditText input = new EditText(getActivity().getApplicationContext());
+        builder.setView(input);
+        final View v = view;
+
+        // -- set positive button for dialog
+        builder.setPositiveButton("Submit", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String txt = input.getText().toString();
+                clue.setHint(txt);
+                TextView hint = (TextView) v.findViewById(R.id.hint_clue);
+                hint.setText(txt);
+                Log.d("ClueWrite", "update hint to clue.");
+            }
+        });
+
+        // -- set negative button for dialog
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        // -- Create dialog
+        ad = builder.create();
+
+        // Finish button
+        button_done = (Button) view.findViewById(R.id.done_clue);
+        button_done.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // Add new clue to data base
+                long clue_id = dbHelper.insertClue(clue, game_id);
+
+                // return to previous fragment to add new clue
+                ft.popBackStack();
+            }
+        });
 
     }
 
@@ -103,6 +162,7 @@ public class FloatingMenuFragment extends android.support.v4.app.Fragment {
                     }
                     break;
                 case R.id.fab_edit:
+                    ad.show();
                     break;
             }
         }
@@ -113,7 +173,16 @@ public class FloatingMenuFragment extends android.support.v4.app.Fragment {
             Bitmap image = (Bitmap) data.getExtras().get("data");
             // TODO: get full size photo, data from get extras is good for an icon but not a lot more.
             imageView.setImageBitmap(image);
+        } else if (requestCode == PLACE_PICKER_REQUEST && requestCode == RESULT_OK) {
+            // Get location data picked by user
+            getPlaceFromPicker(data);
         }
+    }
+
+    private void getPlaceFromPicker (Intent data) {
+        //var placePicked = PlacePicker.getPlace(getContext(), data);
+
+
     }
 
     /*

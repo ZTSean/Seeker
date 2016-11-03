@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity
                 fragment = new ThemeFragment();
                 break;
             case R.id.menus:
-                fragment = new FloatingMenuFragment();
+                fragment = new NewClueFragment();
                 break;
         }
 
