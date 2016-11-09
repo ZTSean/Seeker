@@ -12,13 +12,13 @@ import java.util.List;
  * Created by Zixiao on 10/27/2016.
  */
 
-public class CustomAdapter extends BaseAdapter{
+public class CluesAdapter extends BaseAdapter{
 
     private Context mContext;
     private List<Clue> mClueList;
 
     private static LayoutInflater mInflater = null;
-    public CustomAdapter(Context c, List<Clue> cluelist) {
+    public CluesAdapter(Context c, List<Clue> cluelist) {
         // TODO Auto-generated constructor stub
         mClueList = cluelist;
         mContext = c;

@@ -51,6 +51,7 @@ public class ThemeFragment extends android.support.v4.app.Fragment{
             NewGameFragment tmp = new NewGameFragment();
             tmp.setArguments(args);
 
+            /*
             switch (v.getId()) {
                 case R.id.Romantic:
                     ft.replace(R.id.fragment, tmp).commit();
@@ -61,7 +62,9 @@ public class ThemeFragment extends android.support.v4.app.Fragment{
                 case R.id.Seasonal:
                     ft.replace(R.id.fragment, tmp).commit();
                     break;
-            }
+            }*/
+
+            ft.replace(R.id.fragment, tmp).addToBackStack(null).commit();
         }
     };
 }

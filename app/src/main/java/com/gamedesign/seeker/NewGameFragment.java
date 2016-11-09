@@ -20,7 +20,7 @@ public class NewGameFragment extends android.support.v4.app.Fragment {
     // Adapter and view for list items
     private ListView cluesViewList;
     private List<Clue> mCluesList;
-    private CustomAdapter adapter;
+    private CluesAdapter adapter;
     private DataBaseHelper dbHelper;
 
     @Nullable
@@ -35,14 +35,15 @@ public class NewGameFragment extends android.support.v4.app.Fragment {
 
         // initialize database
         dbHelper = new DataBaseHelper(getActivity().getApplicationContext());
-        long game_id = getArguments().getLong(GamesFragment.GAME_ID);
+        Long game_id = getArguments().getLong(GamesFragment.GAME_ID);
+        String game_name = getArguments().getString(GamesFragment.GAME_NAME);
 
         // Get clue data from data base
-        mCluesList = dbHelper.getAllClues();
+        mCluesList = dbHelper.getAllCluesByGame(game_name);
 
         // List stuff handle
         cluesViewList = (ListView) view.findViewById(R.id.clues);
-        CustomAdapter adapter = new CustomAdapter(getActivity().getApplicationContext(), mCluesList);
+        adapter = new CluesAdapter(getActivity().getApplicationContext(), mCluesList);
         cluesViewList.setAdapter(adapter);
 
 

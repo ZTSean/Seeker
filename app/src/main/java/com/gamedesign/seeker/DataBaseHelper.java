@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.IntegerRes;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.google.android.gms.analytics.ecommerce.Product;
 
@@ -188,9 +189,45 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 CLUE_TABLE_NAME + " ct, " +
                 GAME_TABLE_NAME + " gt, " +
                 GAME_CLUE_TABLE + " gct WHERE " +
-                "gt." + GAME_COLUMN_NAME + " = " + game_name +
-                "AND gct." + GAME_ID + " = " + "gt." + GAME_COLUMN_ID +
-                "AND gct." + CLUE_ID + " = =" + "ct." + CLUE_COLUMN_ID;
+                "gt." + GAME_COLUMN_NAME + " = '" + game_name + "'" +
+                " AND gct." + GAME_ID + " = " + "gt." + GAME_COLUMN_ID +
+                " AND gct." + CLUE_ID + " = " + "ct." + CLUE_COLUMN_ID;
+
+
+        Log.d("database", selectQuery);
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        cursor.moveToFirst(); // redirect to the first entry
+
+        while (cursor.isAfterLast() == false) {
+            Clue c = new Clue();
+            c.setId(cursor.getInt(cursor.getColumnIndex(this.CLUE_COLUMN_ID)));
+            c.setHint(cursor.getString(cursor.getColumnIndex(this.CLUE_COLUMN_HINT)));
+            c.setImage_path(cursor.getString(cursor.getColumnIndex(this.CLUE_COLUMN_IMAGE_PATH)));
+            c.setSpot_name(cursor.getString(cursor.getColumnIndex(this.CLUE_COLUMN_SPOT_NAME)));
+            c.setSpot_addr(cursor.getString(cursor.getColumnIndex(this.CLUE_COLUMN_SPOT_ADDR)));
+            c.setSpot_order(cursor.getInt(cursor.getColumnIndex(this.CLUE_COLUMN_SPOT_ORDER)));
+            c.setSpot_latitude(cursor.getString(cursor.getColumnIndex(this.CLUE_COLUMN_SPOT_LAT)));
+            c.setSpot_longitude(cursor.getString(cursor.getColumnIndex(this.CLUE_COLUMN_SPOT_LONG)));
+
+            clues.add(c);
+            cursor.moveToNext();
+        }
+
+        return clues;
+    }
+
+    public List<Clue> getAllCluesByGameId (Long game_id) {
+        List<Clue> clues = new ArrayList<Clue>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selectQuery = "SELECT * FROM " +
+                CLUE_TABLE_NAME + " ct, " +
+                GAME_TABLE_NAME + " gt, " +
+                GAME_CLUE_TABLE + " gct WHERE " +
+                "gt." + GAME_ID + " = " + game_id +
+                " AND gct." + GAME_ID + " = " + "gt." + GAME_COLUMN_ID +
+                " AND gct." + CLUE_ID + " = " + "ct." + CLUE_COLUMN_ID;
 
         Cursor cursor = db.rawQuery(selectQuery, null);
 

@@ -10,6 +10,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
+
+import java.util.List;
 
 
 /**
@@ -18,7 +21,11 @@ import android.view.ViewGroup;
 
 public class GamesFragment extends android.support.v4.app.Fragment {
     private DataBaseHelper dbHelper;
+    private ListView gameViewList;
+    private List<Game> mGamesList;
+    private GamesAdapter adapter;
     public static final String GAME_ID = "game_id";
+    public static final String GAME_NAME = "game_name";
 
     @Nullable
     @Override
@@ -35,6 +42,14 @@ public class GamesFragment extends android.support.v4.app.Fragment {
 
         // initialize database
         dbHelper = new DataBaseHelper(getActivity().getApplicationContext());
+
+        // Get clue data from data base
+        mGamesList = dbHelper.getAllGames();
+
+        // List stuff handle
+        gameViewList = (ListView) view.findViewById(R.id.games);
+        adapter = new GamesAdapter(getActivity().getApplicationContext(), mGamesList);
+        gameViewList.setAdapter(adapter);
 
         // Add click listener: Create new game
         FloatingActionButton addnewgame = (FloatingActionButton) view.findViewById(R.id.fab);
@@ -55,6 +70,7 @@ public class GamesFragment extends android.support.v4.app.Fragment {
                 // Add arguments to fragment
                 ThemeFragment tmp = new ThemeFragment();
                 Bundle args = new Bundle();
+                args.putString(GAME_NAME, newName);
                 args.putLong(GAME_ID, game_id);
                 tmp.setArguments(args);
 
