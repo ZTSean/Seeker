@@ -10,8 +10,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -24,6 +26,7 @@ public class GamesFragment extends android.support.v4.app.Fragment {
     private ListView gameViewList;
     private List<Game> mGamesList;
     private GamesAdapter adapter;
+    private GameListAdapter gAdapter;
     public static final String GAME_ID = "game_id";
     public static final String GAME_NAME = "game_name";
 
@@ -43,13 +46,44 @@ public class GamesFragment extends android.support.v4.app.Fragment {
         // initialize database
         dbHelper = new DataBaseHelper(getActivity().getApplicationContext());
 
-        // Get clue data from data base
+        // Get game data from data base
         mGamesList = dbHelper.getAllGames();
 
-        // List stuff handle
+        // List stuff handle ---------------------------------------
         gameViewList = (ListView) view.findViewById(R.id.games);
+        /*
         adapter = new GamesAdapter(getActivity().getApplicationContext(), mGamesList);
         gameViewList.setAdapter(adapter);
+        */
+
+        gAdapter = new GameListAdapter(getActivity().getApplicationContext(), mGamesList, dbHelper, ft);
+
+
+        // list item click listener
+        //gameViewList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        gAdapter.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position,
+                                    long id) {
+                // open game fragment
+                String gName = mGamesList.get(position).getGame_name();
+                long gId = mGamesList.get(position).getId();
+                Log.d("adapter", "Called itemsdfasdfawef");
+
+                // load game fragment, although name is newgamefragment
+                NewGameFragment tmp = new NewGameFragment();
+                Bundle args = new Bundle();
+                args.putString(GAME_NAME, gName);
+                args.putLong(GAME_ID, gId);
+                tmp.setArguments(args);
+
+                ft.replace(R.id.fragment, tmp).addToBackStack(null).commit();
+
+            }
+        });
+        gameViewList.setAdapter(gAdapter);
+
+
 
         // Add click listener: Create new game
         FloatingActionButton addnewgame = (FloatingActionButton) view.findViewById(R.id.fab);

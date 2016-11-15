@@ -60,6 +60,8 @@ public class CluesAdapter extends BaseAdapter{
             viewHolder.spot_name = (TextView) convertView.findViewById(R.id.spot_name);
             //viewHolder.number = (TextView) convertView.findViewById(R.id.number);
             //viewHolder.addr = (TextView) convertView.findViewById(R.id.address);
+
+            convertView.setTag(viewHolder);
         } else {
             // Need to understand what does this line for
             viewHolder = (ViewHolder) convertView.getTag();

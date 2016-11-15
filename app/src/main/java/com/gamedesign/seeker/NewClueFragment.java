@@ -21,6 +21,7 @@ import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 
 import org.w3c.dom.Text;
@@ -79,6 +80,21 @@ public class NewClueFragment extends android.support.v4.app.Fragment {
         Bundle args = getArguments();
         dbHelper = new DataBaseHelper(getActivity().getApplicationContext());
         clue = new Clue();
+
+        Boolean isNew = args.getBoolean("isNew");
+        if (isNew) {
+
+        } else {
+            clue.setHint(args.getString(NewGameFragment.CLUE_HINT));
+            clue.setSpot_name(args.getString(NewGameFragment.CLUE_SPOT_NAME));
+            clue.setSpot_addr(args.getString(NewGameFragment.CLUE_SPOT_ADDR));
+            clue.setSpot_latitude(args.getString(NewGameFragment.CLUE_SPOT_LAT));
+            clue.setSpot_longitude(args.getString(NewGameFragment.CLUE_SPOT_LNG));
+            clue.setImage_path(args.getString(NewGameFragment.CLUE_IMG_PATH));
+            clue.setSpot_order(args.getInt(NewGameFragment.CLUE_ORDER));
+
+            updateClueView(clue);
+        }
         game_id = args.getLong(GamesFragment.GAME_ID);
 
         // Hint input dialog builder
@@ -155,6 +171,7 @@ public class NewClueFragment extends android.support.v4.app.Fragment {
                     PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
                     try {
                         startActivityForResult(builder.build(getActivity()), PLACE_PICKER_REQUEST);
+                        Log.d("ClueWrite", "Start Picking");
                     } catch (GooglePlayServicesRepairableException e) {
                         e.printStackTrace();
                     } catch (GooglePlayServicesNotAvailableException e) {
@@ -169,20 +186,54 @@ public class NewClueFragment extends android.support.v4.app.Fragment {
     };
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == CAMERA_PIC_REQUEST && requestCode == RESULT_OK) {
+        if (requestCode == CAMERA_PIC_REQUEST && resultCode == RESULT_OK) {
             Bitmap image = (Bitmap) data.getExtras().get("data");
             // TODO: get full size photo, data from get extras is good for an icon but not a lot more.
             imageView.setImageBitmap(image);
-        } else if (requestCode == PLACE_PICKER_REQUEST && requestCode == RESULT_OK) {
+        } else if (requestCode == PLACE_PICKER_REQUEST && resultCode == RESULT_OK) {
             // Get location data picked by user
             getPlaceFromPicker(data);
         }
     }
 
     private void getPlaceFromPicker (Intent data) {
-        //var placePicked = PlacePicker.getPlace(getContext(), data);
+        Place placePicked = PlacePicker.getPlace(getContext(), data);
+        if (placePicked != null) {
+            String spotname = placePicked.getName().toString();
+            String spotlat = Double.toString(placePicked.getLatLng().latitude);
+            String spotlng = Double.toString(placePicked.getLatLng().longitude);
+            String spotaddr = placePicked.getAddress().toString();
+
+            clue.setSpot_name(spotname);
+            clue.setSpot_latitude(spotlat);
+            clue.setSpot_latitude(spotlng);
+            clue.setSpot_addr(spotaddr);
+
+            View v = getView();
+            TextView spotName = (TextView) v.findViewById(R.id.spot_name);
+            spotName.setText(spotname);
+            TextView spotAddr = (TextView) v.findViewById(R.id.spot_addr);
+            spotAddr.setText(spotaddr);
+            TextView latlng = (TextView) v.findViewById(R.id.spot_lat_and_long);
+            latlng.setText(spotlat + ", " + spotlng);
+
+            Log.d("ClueWrite", "update location information for clue.");
+        } else {
+            // TODO: deal with the situation that no place picked up
+        }
 
 
+    }
+
+    public void updateClueView(Clue c) {
+        View v = getView();
+
+        ((TextView)v.findViewById(R.id.hint_clue)).setText(c.getHint());
+        ((TextView)v.findViewById(R.id.spot_name)).setText(c.getSpot_name());
+        ((TextView)v.findViewById(R.id.spot_addr)).setText(c.getSpot_addr());
+        ((TextView)v.findViewById(R.id.spot_lat_and_long)).setText(c.getSpot_latitude() + ", " + c.getSpot_longitude());
+
+        // TODO: update image hint
     }
 
     /*

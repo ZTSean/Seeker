@@ -16,8 +16,8 @@ import java.util.List;
 public class GamesAdapter extends BaseAdapter {
     private Context mContext;
     private List<Game> mGameList;
-
     private static LayoutInflater mInflater = null;
+
     public GamesAdapter(Context c, List<Game> glist) {
         // TODO Auto-generated constructor stub
         mGameList = glist;
@@ -55,6 +55,8 @@ public class GamesAdapter extends BaseAdapter {
 
             viewHolder = new GamesAdapter.ViewHolder();
             viewHolder.game_name = (TextView) convertView.findViewById(R.id.game_name);
+
+            convertView.setTag(viewHolder);
         } else {
             // Need to understand what does this line for
             viewHolder = (GamesAdapter.ViewHolder) convertView.getTag();

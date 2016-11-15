@@ -190,8 +190,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 GAME_TABLE_NAME + " gt, " +
                 GAME_CLUE_TABLE + " gct WHERE " +
                 "gt." + GAME_COLUMN_NAME + " = '" + game_name + "'" +
-                " AND gct." + GAME_ID + " = " + "gt." + GAME_COLUMN_ID +
-                " AND gct." + CLUE_ID + " = " + "ct." + CLUE_COLUMN_ID;
+                " AND gt." + GAME_COLUMN_ID + " = " + "gct." + GAME_ID +
+                " AND ct." + CLUE_COLUMN_ID + " = " + "gct." + CLUE_ID;
 
 
         Log.d("database", selectQuery);
