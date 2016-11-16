@@ -15,6 +15,7 @@
         android:id="@+id/edittext"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:textColor="@android:color/black"
         android:hint="Enter hint here.."
         android:padding="10dp" />
 

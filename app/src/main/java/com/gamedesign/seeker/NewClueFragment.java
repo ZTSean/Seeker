@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
@@ -98,9 +99,11 @@ public class NewClueFragment extends android.support.v4.app.Fragment {
         game_id = args.getLong(GamesFragment.GAME_ID);
 
         // Hint input dialog builder
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Enter Hint");
         final EditText input = new EditText(getActivity().getApplicationContext());
+        input.setTextColor(Color.parseColor("#212121"));
         builder.setView(input);
         final View v = view;
 
