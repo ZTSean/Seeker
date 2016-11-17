@@ -30,6 +30,7 @@ public class GamesFragment extends android.support.v4.app.Fragment {
     public static final String GAME_ID = "game_id";
     public static final String GAME_NAME = "game_name";
 
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -68,11 +69,11 @@ public class GamesFragment extends android.support.v4.app.Fragment {
                 // open game fragment
                 String gName = mGamesList.get(position).getGame_name();
                 long gId = mGamesList.get(position).getId();
-                Log.d("adapter", "Called itemsdfasdfawef");
+                Log.d("adapter", "#### gId passed into : " + Long.toString(gId));
 
                 // load game fragment, although name is newgamefragment
                 NewGameFragment tmp = new NewGameFragment();
-                Bundle args = new Bundle();
+                Bundle args = getArguments();
                 args.putString(GAME_NAME, gName);
                 args.putLong(GAME_ID, gId);
                 tmp.setArguments(args);
@@ -100,6 +101,7 @@ public class GamesFragment extends android.support.v4.app.Fragment {
 
                 // Create new "Game" entry in database
                 long game_id = dbHelper.insertGame(g);
+                Log.d("adapter", "#### gId passed into : " + Long.toString(game_id));
 
                 // Add arguments to fragment
                 ThemeFragment tmp = new ThemeFragment();

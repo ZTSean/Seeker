@@ -214,6 +214,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             cursor.moveToNext();
         }
 
+        Log.d("database", "#### Find clue by game name: find " + clues.size());
+
         return clues;
     }
 
@@ -332,12 +334,13 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
 
     // ========= GAME_CLUE table methods =============================================================
-    public long createClueToGame(long game_id, long clue_id) {
+    public long createClueToGame(long clue_id, long game_id) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
         values.put(GAME_ID, game_id);
         values.put(CLUE_ID, clue_id);
+        Log.d("database", "#### insert into game_" + Long.toString(game_id) + "with clue_" + Long.toString(clue_id));
 
         return db.insert(GAME_CLUE_TABLE, null, values); // return id in game_clue table row
     }

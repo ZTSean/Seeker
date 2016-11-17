@@ -14,6 +14,8 @@ import android.widget.Button;
  */
 
 public class LoginFragment extends Fragment {
+    public static final String IsPlayer = "is_player";
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -30,6 +32,8 @@ public class LoginFragment extends Fragment {
         Fragment fragment = null;
         final FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
 
+        final Bundle args = new Bundle();
+        final GamesFragment tmp = new GamesFragment();
 
         // Add click listener to change to creator mode
         Button creator = (Button) view.findViewById(R.id.creator);
@@ -37,7 +41,9 @@ public class LoginFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                ft.replace(R.id.fragment, new GamesFragment()).addToBackStack(null).commit();
+                args.putBoolean(IsPlayer, false);
+                tmp.setArguments(args);
+                ft.replace(R.id.fragment, tmp).addToBackStack(null).commit();
             }
         });
 
@@ -48,6 +54,9 @@ public class LoginFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 // do whatever stuff you wanna do here
+                args.putBoolean(IsPlayer, true);
+                tmp.setArguments(args);
+                ft.replace(R.id.fragment, tmp).addToBackStack(null).commit();
             }
         });
     }
