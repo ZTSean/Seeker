@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Seeker.iml" filepath="$PROJECT_DIR$/Seeker.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../artoolkit5/AndroidStudioProjects/ARBaseLibProj/aRBaseLib/aRBaseLib-debug.iml" filepath="$PROJECT_DIR$/../artoolkit5/AndroidStudioProjects/ARBaseLibProj/aRBaseLib/aRBaseLib-debug.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

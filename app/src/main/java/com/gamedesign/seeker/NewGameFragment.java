@@ -43,7 +43,7 @@ public class NewGameFragment extends android.support.v4.app.Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         // initialize database
-        dbHelper = new DataBaseHelper(getActivity().getApplicationContext());
+        dbHelper = new DataBaseHelper(getActivity());
         Long game_id = getArguments().getLong(GamesFragment.GAME_ID);
         String game_name = getArguments().getString(GamesFragment.GAME_NAME);
 
@@ -52,7 +52,7 @@ public class NewGameFragment extends android.support.v4.app.Fragment {
 
         // List stuff handle
         cluesViewList = (ListView) view.findViewById(R.id.clues);
-        adapter = new CluesAdapter(getActivity().getApplicationContext(), mCluesList);
+        adapter = new CluesAdapter(getActivity(), mCluesList);
         cluesViewList.setAdapter(adapter);
 
         // Handle navigation view item clicks here. ==============================================================
