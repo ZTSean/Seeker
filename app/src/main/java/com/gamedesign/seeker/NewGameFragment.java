@@ -16,6 +16,7 @@ import java.util.List;
  * Created by Zixiao on 10/31/2016.
  */
 
+
 public class NewGameFragment extends android.support.v4.app.Fragment {
 
     // Adapter and view for list items
