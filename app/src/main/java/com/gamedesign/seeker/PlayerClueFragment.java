@@ -43,6 +43,7 @@ public class PlayerClueFragment extends android.support.v4.app.Fragment{
     // Temporary image store field
     private ImageView imageView;
     private String mCurrentPhotoPath;
+    private Button button_open_ar;
 
     private DataBaseHelper dbHelper;
 
@@ -62,6 +63,17 @@ public class PlayerClueFragment extends android.support.v4.app.Fragment{
         clue = new Clue();
 
         game_id = args.getLong(GamesFragment.GAME_ID);
+
+        // Open AR button
+        button_open_ar = (Button) view.findViewById(R.id.open_ar);
+        button_open_ar.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), ARClueActivity.class);
+                startActivity(intent);
+            }
+        });
 
     }
 

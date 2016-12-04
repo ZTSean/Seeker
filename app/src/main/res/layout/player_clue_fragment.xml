@@ -53,5 +53,11 @@
             android:id="@+id/spot_lat_and_long"
             android:text="Add Latitude and Longitude"/>
 
+        <Button
+            android:text="Open AR"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/open_ar" />
+
     </LinearLayout>
 </RelativeLayout>

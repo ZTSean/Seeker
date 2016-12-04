@@ -57,23 +57,25 @@ public class GamesFragment extends android.support.v4.app.Fragment {
         gameViewList.setAdapter(adapter);
         */
 
-        gAdapter = new GameListAdapter(getActivity().getApplicationContext(), mGamesList, dbHelper, ft);
+
+        gAdapter = new GameListAdapter(getActivity(), mGamesList, dbHelper, ft, getArguments());
 
 
         // list item click listener
         //gameViewList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        /*
         gAdapter.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position,
                                     long id) {
                 // open game fragment
-                String gName = mGamesList.get(position).getGame_name();
-                long gId = mGamesList.get(position).getId();
+
                 Log.d("adapter", "#### gId passed into : " + Long.toString(gId));
 
                 // load game fragment, although name is newgamefragment
                 NewGameFragment tmp = new NewGameFragment();
                 Bundle args = getArguments();
+                Log.d("#####", Boolean.toString(args.getBoolean(ChooseRoleFragment.IsPlayer)));
                 args.putString(GAME_NAME, gName);
                 args.putLong(GAME_ID, gId);
                 tmp.setArguments(args);
@@ -82,6 +84,7 @@ public class GamesFragment extends android.support.v4.app.Fragment {
 
             }
         });
+        */
         gameViewList.setAdapter(gAdapter);
 
 

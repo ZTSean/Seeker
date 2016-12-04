@@ -10,18 +10,15 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 /**
- * Created by Zixiao on 10/25/2016.
+ * Created by Zixiao on 12/4/2016.
  */
 
 public class LoginFragment extends Fragment {
-    public static final String IsPlayer = "is_player";
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.login_fragment, container, false);
-
-
+        return inflater.inflate(R.layout.login_fragment
+                , container, false);
     }
 
     @Override
@@ -29,41 +26,16 @@ public class LoginFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         // Handle navigation view item clicks here.
-        Fragment fragment = null;
         final FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
 
-        final Bundle args = new Bundle();
-        final GamesFragment tmp = new GamesFragment();
-
-        // Add click listener to change to creator mode
-        Button creator = (Button) view.findViewById(R.id.creator);
-        creator.setOnClickListener(new View.OnClickListener() {
+        Button login_button = (Button) view.findViewById(R.id.login_button);
+        login_button.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                args.putBoolean(IsPlayer, false);
-                tmp.setArguments(args);
-                ft.replace(R.id.fragment, tmp).addToBackStack(null).commit();
+                ft.replace(R.id.fragment, new ChooseRoleFragment()).addToBackStack(null).commit();
             }
         });
-
-        // Add click listener to change to receiver mode
-        Button receiver = (Button) view.findViewById(R.id.receiver);
-        receiver.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                // do whatever stuff you wanna do here
-                args.putBoolean(IsPlayer, true);
-                tmp.setArguments(args);
-                ft.replace(R.id.fragment, tmp).addToBackStack(null).commit();
-            }
-        });
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
 
     }
 }

@@ -12,9 +12,18 @@
     <!--
         Camera Permission
     -->
+    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-feature android:name="android.hardware.camera"
-        android:required="true" />
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+    <uses-feature android:glEsVersion="0x00010100" />
+
+    <supports-screens
+        android:anyDensity="true"
+        android:largeScreens="true"
+        android:normalScreens="true"
+        android:smallScreens="true"
+        android:xlargeScreens="true" />
 
 
 
@@ -23,7 +32,7 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:name="android.support.multidex.MultiDexApplication"
+        android:name="com.gamedesign.seeker.ARClueApplication"
         android:theme="@style/AppTheme">
 
         <!--
@@ -58,6 +67,21 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".ARClueActivity"
+            android:label="@string/ar_activity_name"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
+            android:name="com.gamedesign.seeker.SettingsActivity"
+            android:label="@string/settings_activity_name">
+        </activity>
+
+        <activity
+            android:name="org.artoolkit.ar.base.camera.CameraPreferencesActivity"
+            android:label="@string/arsettings_activity_name">
         </activity>
     </application>
 

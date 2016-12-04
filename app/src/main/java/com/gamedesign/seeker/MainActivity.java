@@ -1,5 +1,6 @@
 package com.gamedesign.seeker;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -23,9 +24,12 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Toolbar set
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        // Drawer set
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, mDrawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -85,14 +89,17 @@ public class MainActivity extends AppCompatActivity
         final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         switch (item.getItemId()) {
             case R.id.action_home:
-                fragment = new LoginFragment();
+                fragment = new ChooseRoleFragment();
                 clearStack();
+                ft.replace(R.id.fragment, fragment).commit();
                 break;
             case R.id.action_settings:
+                Intent intent = new Intent(this, SettingsActivity.class);
+                startActivity(intent);
                 break;
         }
 
-        ft.replace(R.id.fragment, fragment).commit();
+
         //return true;
 
         /*

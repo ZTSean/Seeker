@@ -5,5 +5,8 @@
     <string name="navigation_drawer_open">Navigation open</string>
     <string name="navigation_drawer_close">Navigation close</string>
     <string name="map_activity_name">Map</string>
+    <string name="ar_activity_name">AR</string>
+    <string name="settings_activity_name">Settings</string>
+    <string name="arsettings_activity_name">ARSettings</string>
     <string name="login_instruction">Choose user:</string>
 </resources>

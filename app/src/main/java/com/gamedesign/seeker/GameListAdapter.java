@@ -2,21 +2,17 @@ package com.gamedesign.seeker;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.chauthai.swipereveallayout.SwipeRevealLayout;
 import com.chauthai.swipereveallayout.ViewBinderHelper;
-
-import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -35,19 +31,22 @@ public class GameListAdapter extends BaseAdapter {
     private DataBaseHelper dbHelper;
     private AdapterView.OnItemClickListener onItemClickListener;
     private FragmentTransaction ft;
+    private Bundle args;
 
-    public GameListAdapter (Context ctx, List<Game> glist, DataBaseHelper dbh, FragmentTransaction fragmentTransaction) {
+    public GameListAdapter (Context ctx, List<Game> glist, DataBaseHelper dbh, FragmentTransaction fragmentTransaction, Bundle as) {
         mContext = ctx;
         mGameList = glist;
         dbHelper = dbh;
         ft = fragmentTransaction;
+        args = as;
         mInflater = LayoutInflater.from(ctx);
         viewBinderHelper = new ViewBinderHelper();
     }
 
     private class ViewHoler {
         TextView game_name;
-        View deleteView;
+        TextView deleteView;
+        TextView detailView;
         SwipeRevealLayout swipteLayout;
     }
 
@@ -80,7 +79,8 @@ public class GameListAdapter extends BaseAdapter {
 
             viewHoler = new ViewHoler();
             viewHoler.game_name = (TextView) convertView.findViewById(R.id.game_name_swipe);
-            viewHoler.deleteView = convertView.findViewById(R.id.delete_layout);
+            viewHoler.deleteView = (TextView) convertView.findViewById(R.id.delete_button);
+            viewHoler.detailView = (TextView) convertView.findViewById(R.id.detail_button);
             viewHoler.swipteLayout = (SwipeRevealLayout) convertView.findViewById(R.id.swipe_layout);
 
             convertView.setTag(viewHoler);
@@ -89,6 +89,7 @@ public class GameListAdapter extends BaseAdapter {
         }
 
         final String gName = mGameList.get(position).getGame_name();
+        final int gId = mGameList.get(position).getId();
 
 
         if (gName != null) {
@@ -108,18 +109,31 @@ public class GameListAdapter extends BaseAdapter {
 
             });
 
+            // detail of game
+            viewHoler.detailView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // open game fragment
+                    Log.d("adapter", "#### gId passed into : " + Long.toString(gId));
+                    // load existed game fragment, although name is newgamefragment
+                    NewGameFragment tmp = new NewGameFragment();
+                    Log.d("#####", Boolean.toString(args.getBoolean(com.gamedesign.seeker.ChooseRoleFragment.IsPlayer)));
+                    args.putString(GAME_NAME, gName);
+                    args.putLong(GAME_ID, gId);
+                    tmp.setArguments(args);
+
+                    ft.replace(R.id.fragment, tmp).addToBackStack(null).commit();
+                }
+
+            });
+
+
             viewHoler.game_name.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
-                    // open game fragment
-                    String gName = mGameList.get(position).getGame_name();
-                    long gId = mGameList.get(position).getId();
-                    Log.d("adapter", "Called itemsdfasdfawef");
-
                     // load game fragment, although name is newgamefragment
                     NewGameFragment tmp = new NewGameFragment();
-                    Bundle args = new Bundle();
                     args.putString(GAME_NAME, gName);
                     args.putLong(GAME_ID, gId);
                     tmp.setArguments(args);
