@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include layout="@layout/toolbar"/>
+
+    <TextView
+        android:text="Setup Your Radio Clue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/hint_instruction"/>
+
+    <EditText
+        android:hint="Description of the Clue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/clue_hint"/>
+
+    <Button
+        android:text="Record"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/record_radio"
+        android:textStyle="normal|bold"
+        android:fontFamily="casual" />
+
+    <Button
+        android:text="Reset"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/reset_radio"
+        android:textStyle="normal|bold"
+        android:fontFamily="casual" />
+
+    <Button
+        android:text="Submit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/submit_radio"
+        android:textStyle="normal|bold"
+        android:fontFamily="casual" />
+
+</LinearLayout>

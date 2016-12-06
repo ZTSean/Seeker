@@ -88,7 +88,6 @@ public class GamesFragment extends android.support.v4.app.Fragment {
         gameViewList.setAdapter(gAdapter);
 
 
-
         // Add click listener: Create new game
         FloatingActionButton addnewgame = (FloatingActionButton) view.findViewById(R.id.fab);
         addnewgame.setOnClickListener(new View.OnClickListener() {
@@ -118,6 +117,13 @@ public class GamesFragment extends android.support.v4.app.Fragment {
                 Log.d("Transaction", "Create New Game.");
             }
         });
+
+        // hide floating action bar if is player
+        Bundle args = getArguments();
+        Boolean isPlayer = args.getBoolean(ChooseRoleFragment.IsPlayer);
+        if (isPlayer) {
+            addnewgame.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override

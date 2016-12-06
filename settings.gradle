@@ -1,3 +1,2 @@
-include ':app', ':aRBaseLib-debug'
+include ':app'
 
-project(':aRBaseLib-debug').projectDir = new File('../artoolkit5/AndroidStudioProjects/ARBaseLibProj/aRBaseLib')

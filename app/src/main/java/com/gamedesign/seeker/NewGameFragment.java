@@ -26,6 +26,7 @@ public class NewGameFragment extends android.support.v4.app.Fragment {
     private CluesAdapter adapter;
     private DataBaseHelper dbHelper;
 
+    public static final String CLUE_ID = "clue_id";
     public static final String CLUE_HINT = "clue_hint";
     public static final String CLUE_SPOT_ADDR = "clue_spot_addr";
     public static final String CLUE_SPOT_LAT = "clue_spot_lat";
@@ -33,6 +34,8 @@ public class NewGameFragment extends android.support.v4.app.Fragment {
     public static final String CLUE_SPOT_NAME = "clue_spot_name";
     public static final String CLUE_IMG_PATH = "clue_img_path";
     public static final String CLUE_ORDER = "clue_order";
+
+    public static final String IS_NEW_HINT = "isNew";
 
     @Nullable
     @Override
@@ -73,7 +76,8 @@ public class NewGameFragment extends android.support.v4.app.Fragment {
 
                     Bundle args = getArguments();
                     Clue c = mCluesList.get(position);
-                    args.putBoolean("isNew", false);
+                    args.putBoolean(IS_NEW_HINT, false);
+                    args.putInt(CLUE_ID, c.getId());
                     args.putString(CLUE_HINT, c.getHint());
                     args.putString(CLUE_SPOT_NAME, c.getSpot_name());
                     args.putString(CLUE_SPOT_ADDR, c.getSpot_addr());
@@ -87,17 +91,21 @@ public class NewGameFragment extends android.support.v4.app.Fragment {
 
                 }
             });
+
+            // hide floating action button
+            view.findViewById(R.id.fab).setVisibility(View.INVISIBLE);
+
         } else {
             cluesViewList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position,
                                         long id) {
                     NewClueFragment tmp = new NewClueFragment();
-                    Log.d("#########", "not player");
 
                     Bundle args = getArguments();
                     Clue c = mCluesList.get(position);
-                    args.putBoolean("isNew", false);
+                    args.putBoolean(IS_NEW_HINT, false);
+                    args.putInt(CLUE_ID, c.getId());
                     args.putString(CLUE_HINT, c.getHint());
                     args.putString(CLUE_SPOT_NAME, c.getSpot_name());
                     args.putString(CLUE_SPOT_ADDR, c.getSpot_addr());
@@ -123,7 +131,7 @@ public class NewGameFragment extends android.support.v4.app.Fragment {
             public void onClick(View v) {
                 NewClueFragment tmp = new NewClueFragment();
                 Bundle args = getArguments();
-                args.putBoolean("isNew", true);
+                args.putBoolean(IS_NEW_HINT, true);
                 tmp.setArguments(args); // pass game_id to next level fragment
 
                 // start new clue

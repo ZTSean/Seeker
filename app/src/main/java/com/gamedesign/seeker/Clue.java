@@ -17,11 +17,13 @@ public class Clue {
     private String spot_latitude;
     private String spot_longitude;
 
+    public static String NO_TEXT_HINT = "No Text Hint";
+
     // Constructor
 
     public Clue() {
         this.id = -1;
-        this.hint = "No hint";
+        this.hint = NO_TEXT_HINT;
         this.image_path = "";
         this.spot_name = "";
         this.spot_order = -1;

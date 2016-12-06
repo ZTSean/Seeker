@@ -53,11 +53,44 @@
             android:id="@+id/spot_lat_and_long"
             android:text="Add Latitude and Longitude"/>
 
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/image_button_design"
+                android:src="@drawable/ic_radio"/>
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/image_button_design"
+                android:src="@drawable/ic_camera"/>
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/image_button_design"
+                android:src="@drawable/ic_map"/>
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/image_button_design"
+                android:src="@drawable/ic_edit"/>
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/image_button_design"
+                android:src="@drawable/ic_ar"/>
+
+
+        </LinearLayout>
+
         <Button
-            android:text="Open AR"
+            android:text="Solve"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/open_ar" />
+            android:id="@+id/solve_clue" />
 
     </LinearLayout>
 </RelativeLayout>

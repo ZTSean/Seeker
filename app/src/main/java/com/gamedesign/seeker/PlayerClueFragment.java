@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
@@ -35,6 +36,7 @@ public class PlayerClueFragment extends android.support.v4.app.Fragment{
     private static final int CAMERA_PIC_REQUEST = 1;
     private static final int MAP_ROUTE_REQUEST = 2;
     private static final int PLACE_PICKER_REQUEST = 3;
+    private static final int GET_ANSWER_REQUEST = 1004;
 
     private Clue clue;
     private long game_id;
@@ -64,16 +66,56 @@ public class PlayerClueFragment extends android.support.v4.app.Fragment{
 
         game_id = args.getLong(GamesFragment.GAME_ID);
 
+        /*
         // Open AR button
         button_open_ar = (Button) view.findViewById(R.id.open_ar);
         button_open_ar.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), ARClueActivity.class);
-                startActivity(intent);
+                //Intent intent = new Intent(getActivity(), ARClueActivity.class);
+                //startActivity(intent);
             }
         });
+        */
+
+        // Start solve clue button
+        Button solve_button = (Button) view.findViewById(R.id.solve_clue);
+        solve_button.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent getAnswer = new Intent(getActivity(), AnswerActivity.class);
+                startActivityForResult(getAnswer, GET_ANSWER_REQUEST);
+            }
+        });
+
+        // determine whether is correct answer or not ----------------------------------------
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Is Answer Correct?");
+        final TextView input = new TextView(getActivity());
+        builder.setView(input);
+        final View v = getView();
+
+        // -- set positive button for dialog
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Done with this clue, go to next clue
+                ft.popBackStack();
+            }
+        });
+
+        // -- set negative button for dialog
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(getActivity(), "Incorrect answer!", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        // -- Create dialog
+        ad = builder.create();
 
     }
 
@@ -82,44 +124,10 @@ public class PlayerClueFragment extends android.support.v4.app.Fragment{
         super.onActivityCreated(savedInstanceState);
     }
 
-    private View.OnClickListener clickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            switch (v.getId()) {
-                case R.id.fab_camera:
-                    // new camera activity
-                    Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                    startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST);
-                    break;
-                case R.id.fab_map:
-                    /*
-                    Intent mapIntent = new Intent(getActivity().getApplicationContext(), MapsActivity.class);
-                    startActivity(mapIntent);
-                    */
-                    PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
-                    try {
-                        startActivityForResult(builder.build(getActivity()), PLACE_PICKER_REQUEST);
-                        Log.d("ClueWrite", "Start Picking");
-                    } catch (GooglePlayServicesRepairableException e) {
-                        e.printStackTrace();
-                    } catch (GooglePlayServicesNotAvailableException e) {
-                        e.printStackTrace();
-                    }
-                    break;
-                case R.id.fab_edit:
-                    ad.show();
-                    break;
-            }
-        }
-    };
-
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == CAMERA_PIC_REQUEST && resultCode == RESULT_OK) {
-            Bitmap image = (Bitmap) data.getExtras().get("data");
-            // TODO: get full size photo, data from get extras is good for an icon but not a lot more.
-            imageView.setImageBitmap(image);
-        } else if (requestCode == PLACE_PICKER_REQUEST && resultCode == RESULT_OK) {
-            // Get location data picked by user
+        if (requestCode == GET_ANSWER_REQUEST && resultCode == RESULT_OK) {
+            // Jump up whether it is correct dialog
+            ad.show();
         }
     }
 }

@@ -5,10 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
+
 
         <TextView
             android:layout_width="match_parent"
@@ -61,7 +66,9 @@
             android:layout_height="wrap_content"
             android:id="@+id/done_clue" />
 
+
     </LinearLayout>
+    </ScrollView>
 
 
 
@@ -83,11 +90,19 @@
         fab:menu_colorRipple="@color/floating_ripple">
 
         <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/fab_edit"
+            android:id="@+id/fab_radio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_edit"
-            fab:fab_label="Add Clue"
+            android:src="@drawable/ic_radio"
+            fab:fab_label="Add Radio"
+            style="@style/MenuButtonsStyle" />
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/fab_camera"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_camera"
+            fab:fab_label="Add Photo"
             style="@style/MenuButtonsStyle" />
 
         <com.github.clans.fab.FloatingActionButton
@@ -99,11 +114,19 @@
             style="@style/MenuButtonsStyle" />
 
         <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/fab_camera"
+            android:id="@+id/fab_edit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_camera"
-            fab:fab_label="Add Photo"
+            android:src="@drawable/ic_edit"
+            fab:fab_label="Add Clue"
+            style="@style/MenuButtonsStyle" />
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/fab_AR"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_ar"
+            fab:fab_label="Add AR"
             style="@style/MenuButtonsStyle" />
 
     </com.github.clans.fab.FloatingActionMenu>

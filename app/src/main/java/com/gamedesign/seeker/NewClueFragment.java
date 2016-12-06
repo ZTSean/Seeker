@@ -2,11 +2,15 @@ package com.gamedesign.seeker;
 
 import android.app.AlertDialog;
 import android.app.Fragment;
+import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
@@ -17,6 +21,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
@@ -27,6 +32,12 @@ import com.google.android.gms.location.places.ui.PlacePicker;
 
 import org.w3c.dom.Text;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import static android.app.Activity.RESULT_OK;
 
 /**
@@ -36,15 +47,20 @@ import static android.app.Activity.RESULT_OK;
 public class NewClueFragment extends android.support.v4.app.Fragment {
 
     private int status; // Google Play Services status: whether it is available
-    private static final int CAMERA_PIC_REQUEST = 1;
-    private static final int MAP_ROUTE_REQUEST = 2;
-    private static final int PLACE_PICKER_REQUEST = 3;
+    private static final int CAMERA_PIC_REQUEST = 1001;
+    private static final int MAP_ROUTE_REQUEST = 1002;
+    private static final int PLACE_PICKER_REQUEST = 1003;
+    private static final int HINT_REQUEST = 1004;
+    private static final int RADIO_REQUEST = 1005;
+    private static final int AR_REQUEST = 1006;
     private FloatingActionMenu menu;
 
     // member of all buttons
     private FloatingActionButton fab_edit;
     private FloatingActionButton fab_map;
     private FloatingActionButton fab_camera;
+    private FloatingActionButton fab_radio;
+    private FloatingActionButton fab_ar;
     private Button button_done;
 
     private Clue clue;
@@ -53,7 +69,8 @@ public class NewClueFragment extends android.support.v4.app.Fragment {
 
     // Temporary image store field
     private ImageView imageView;
-    private String mCurrentPhotoPath;
+    private Uri mImageUri;
+    private String imagePath = "";
 
     private DataBaseHelper dbHelper;
 
@@ -73,19 +90,25 @@ public class NewClueFragment extends android.support.v4.app.Fragment {
         fab_edit = (FloatingActionButton) view.findViewById(R.id.fab_edit);
         fab_camera = (FloatingActionButton) view.findViewById(R.id.fab_camera);
         fab_map = (FloatingActionButton) view.findViewById(R.id.fab_map);
+        fab_ar = (FloatingActionButton) view.findViewById(R.id.fab_AR);
+        fab_radio = (FloatingActionButton) view.findViewById(R.id.fab_label);
 
         menu.hideMenuButton(false);
         menu.setClosedOnTouchOutside(true);
 
+        imageView = (ImageView) view.findViewById(R.id.image_clue);
+
         final FragmentManager ft = getActivity().getSupportFragmentManager();
         Bundle args = getArguments();
         dbHelper = new DataBaseHelper(getActivity().getApplicationContext());
+        game_id = args.getLong(GamesFragment.GAME_ID);
         clue = new Clue();
 
-        Boolean isNew = args.getBoolean("isNew");
-        if (isNew) {
-
-        } else {
+        final Boolean isNew = args.getBoolean(NewGameFragment.IS_NEW_HINT);
+        Log.d("-----", "isnew: " + Boolean.toString(isNew));
+        if (!isNew) {
+            // isn't new clue
+            clue.setId(args.getInt(NewGameFragment.CLUE_ID));
             clue.setHint(args.getString(NewGameFragment.CLUE_HINT));
             clue.setSpot_name(args.getString(NewGameFragment.CLUE_SPOT_NAME));
             clue.setSpot_addr(args.getString(NewGameFragment.CLUE_SPOT_ADDR));
@@ -93,42 +116,15 @@ public class NewClueFragment extends android.support.v4.app.Fragment {
             clue.setSpot_longitude(args.getString(NewGameFragment.CLUE_SPOT_LNG));
             clue.setImage_path(args.getString(NewGameFragment.CLUE_IMG_PATH));
             clue.setSpot_order(args.getInt(NewGameFragment.CLUE_ORDER));
+            Log.d("------", "id: " + Integer.toString(clue.getId()));
 
             updateClueView(clue);
         }
-        game_id = args.getLong(GamesFragment.GAME_ID);
 
-        // Hint input dialog builder
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("Enter Hint");
-        final EditText input = new EditText(getActivity().getApplicationContext());
-        input.setTextColor(Color.parseColor("#212121"));
-        builder.setView(input);
-        final View v = view;
-
-        // -- set positive button for dialog
-        builder.setPositiveButton("Submit", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                String txt = input.getText().toString();
-                clue.setHint(txt);
-                TextView hint = (TextView) v.findViewById(R.id.hint_clue);
-                hint.setText(txt);
-                Log.d("ClueWrite", "update hint to clue.");
-            }
-        });
-
-        // -- set negative button for dialog
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-
-        // -- Create dialog
-        ad = builder.create();
+        /* ---------------------- replaced by addhintactivity --------------------
+        ft
+        ------------------------------------------------------------------------*/
 
         // Finish button
         button_done = (Button) view.findViewById(R.id.done_clue);
@@ -137,7 +133,12 @@ public class NewClueFragment extends android.support.v4.app.Fragment {
             @Override
             public void onClick(View v) {
                 // Add new clue to data base
-                long clue_id = dbHelper.insertClue(clue, game_id);
+                if (isNew) {
+                    long clue_id = dbHelper.insertClue(clue, game_id);
+                } else {
+                    dbHelper.updateClue(clue);
+                }
+
 
                 // return to previous fragment to add new clue
                 ft.popBackStack();
@@ -160,13 +161,36 @@ public class NewClueFragment extends android.support.v4.app.Fragment {
     private View.OnClickListener clickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            Bundle args = getArguments();
             switch (v.getId()) {
-                case R.id.fab_camera:
+                case R.id.fab_camera: // --------------- Camera
                     // new camera activity
+                    Uri outputFileUri = Uri.fromFile(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM));
                     Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                    cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
+                    File photo = null;
+                    try
+                    {
+                        // place where to store camera taken picture
+                        photo = createTemporaryFile("picture", ".jpg");
+                        photo.delete();
+                    }
+                    catch(Exception e)
+                    {
+                        e.printStackTrace();
+                        Log.v("------", "Can't create file to take picture!");
+                        Toast.makeText(getActivity(), "Please check SD card! Image shot is impossible!", 10000);
+                    }
+                    mImageUri = Uri.fromFile(photo);
+                    cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, mImageUri);
+                    clue.setImage_path(mImageUri.getPath().toString());
+                    Log.d("444444444", mImageUri.getPath().toString());
+
+
+
                     startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST);
                     break;
-                case R.id.fab_map:
+                case R.id.fab_map: // ------------------ Map
                     /*
                     Intent mapIntent = new Intent(getActivity().getApplicationContext(), MapsActivity.class);
                     startActivity(mapIntent);
@@ -182,7 +206,21 @@ public class NewClueFragment extends android.support.v4.app.Fragment {
                     }
                     break;
                 case R.id.fab_edit:
-                    ad.show();
+                    //ad.show();
+                    Intent hintintent = new Intent(getActivity(), AddHintActivity.class);
+                    if (!args.getBoolean(NewGameFragment.IS_NEW_HINT)) {
+                        // is not new
+                        if (!(clue.getHint().equals(Clue.NO_TEXT_HINT))) {
+                            hintintent.putExtra(AddHintActivity.HINT_CONTENT, clue.getHint());
+                        }
+                    }
+                    startActivityForResult(hintintent, HINT_REQUEST);
+                    break;
+                case R.id.fab_radio:
+                    Intent radiointent = new Intent(getActivity(), AddRadioActivity.class);
+                    startActivityForResult(radiointent, RADIO_REQUEST);
+                    break;
+                case R.id.fab_AR:
                     break;
             }
         }
@@ -190,12 +228,21 @@ public class NewClueFragment extends android.support.v4.app.Fragment {
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CAMERA_PIC_REQUEST && resultCode == RESULT_OK) {
-            Bitmap image = (Bitmap) data.getExtras().get("data");
+            //Bundle extras = data.getExtras();
+            //Bitmap imageBitmap = (Bitmap) extras.get("data");
+            grabImage(imageView, mImageUri);
+            //imageView.setImageBitmap(imageBitmap);
             // TODO: get full size photo, data from get extras is good for an icon but not a lot more.
-            imageView.setImageBitmap(image);
         } else if (requestCode == PLACE_PICKER_REQUEST && resultCode == RESULT_OK) {
             // Get location data picked by user
             getPlaceFromPicker(data);
+        } else if (requestCode == HINT_REQUEST && resultCode == RESULT_OK) {
+            // get hint content from addhintactivity
+            String hint = data.getStringExtra(AddHintActivity.HINT_CONTENT);
+            clue.setHint(hint);
+            updateClueView(clue);
+        } else if (requestCode == RADIO_REQUEST && resultCode == RESULT_OK) {
+
         }
     }
 
@@ -236,26 +283,44 @@ public class NewClueFragment extends android.support.v4.app.Fragment {
         ((TextView)v.findViewById(R.id.spot_addr)).setText(c.getSpot_addr());
         ((TextView)v.findViewById(R.id.spot_lat_and_long)).setText(c.getSpot_latitude() + ", " + c.getSpot_longitude());
 
+        if (!c.getImage_path().equals("")) {
+            Uri imageUri = Uri.fromFile(new File(c.getImage_path()));
+            grabImage((ImageView)v.findViewById(R.id.image_clue), imageUri);
+        }
+
+
         // TODO: update image hint
     }
 
-    /*
-    private File createTemporaryFile() throws IOException {
-        // Create an image file name: JPEG_yyyyMMdd_HHmmss_
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
 
-        // Path for store image
-        File storageDir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+    public File createTemporaryFile(String part, String ext) throws Exception
+    {
+        File tempDir= Environment.getExternalStorageDirectory();
+        imagePath = tempDir.getAbsolutePath()+"/.temp/";
+        tempDir = new File(imagePath);
+        Log.d("------", tempDir.getPath());
+        if(!tempDir.exists())
+        {
+            tempDir.mkdirs();
+        }
+        return File.createTempFile(part, ext, tempDir);
+    }
 
-        File image = File.createTempFile(
-                imageFileName, /* Prefix
-                ".jpg",         /* suffix
-                storageDir      /* directory
-        );
-
-        // Save a file: path for use with ACTION_VIEW intents
-        mCurrentPhotoPath = "file" + image.getAbsolutePath();
-        return image;
-    }*/
+    public void grabImage(ImageView imageView, Uri imageUri)
+    {
+        getActivity().getContentResolver().notifyChange(imageUri, null);
+        ContentResolver cr = getActivity().getContentResolver();
+        Bitmap bitmap;
+        try
+        {
+            Log.d("33333333333", imageUri.getPath());
+            bitmap = android.provider.MediaStore.Images.Media.getBitmap(cr, imageUri);
+            //imageView.setImageBitmap(bitmap);
+        }
+        catch (Exception e)
+        {
+            Toast.makeText(getActivity(), "Failed to load", Toast.LENGTH_SHORT).show();
+            Log.d("----", "Failed to load", e);
+        }
+    }
 }
