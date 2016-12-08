@@ -2,47 +2,70 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@drawable/chooserole_bg" >
+
+    <ImageView
+        android:layout_width="150dp"
+        android:layout_height="60dp"
+        android:src="@drawable/seekerlogo"
+        android:layout_gravity="center"
+        android:layout_marginTop="100dp"
+        android:background="@color/white_50"
+        android:id="@+id/imageView" />
 
     <TextView
-        android:text="@string/login_instruction"
+        android:text="What are you here for?"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="24sp"
-        android:textStyle="normal|bold"
-        android:textAlignment="center" />
-
-    <Button
-        android:text="Creator"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/creator"
-        android:textStyle="normal|bold"
+        android:id="@+id/Instruction"
+        android:fontFamily="sans-serif"
+        android:textSize="30sp"
+        android:textColor="@color/white"
         android:textAlignment="center"
-        android:textSize="24sp"
-        android:layout_marginBottom="10dp"
-        android:layout_marginEnd="20dp"
-        android:paddingBottom="20dp"
-        android:paddingTop="20dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="20dp"
-        android:fontFamily="casual" />
+        android:background="@color/white_50"
+        android:layout_marginTop="100dp"
+        />
 
-    <Button
-        android:text="Player"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/receiver"
-        android:textStyle="normal|bold"
-        android:textAlignment="center"
-        android:textSize="24sp"
-        android:layout_marginBottom="10dp"
-        android:layout_marginEnd="20dp"
-        android:paddingBottom="20dp"
-        android:paddingTop="20dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="20dp"
-        android:fontFamily="casual" />
+        android:orientation="horizontal"
+        android:layout_gravity="center">
+
+        <Button
+            android:text="Creator"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/creator"
+            android:textStyle="normal"
+            android:textAlignment="center"
+            android:textSize="18sp"
+            android:textColor="@color/white"
+            android:fontFamily="sans-serif"
+            android:layout_marginTop="40dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:background="@color/brown"/>
+
+        <Button
+            android:text="Player"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/receiver"
+            android:textStyle="normal"
+            android:textAlignment="center"
+            android:textSize="18sp"
+            android:layout_marginTop="40dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:textColor="@color/white"
+            android:fontFamily="sans-serif"
+            android:background="@color/grey" />
+
+
+    </LinearLayout>
+
 
 
 </LinearLayout>

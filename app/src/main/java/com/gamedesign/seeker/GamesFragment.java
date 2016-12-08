@@ -1,5 +1,7 @@
 package com.gamedesign.seeker;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.IntegerRes;
 import android.support.annotation.Nullable;
@@ -96,7 +98,7 @@ public class GamesFragment extends android.support.v4.app.Fragment {
             public void onClick(View v) {
                 // Create new name for new game
                 int count = dbHelper.getAllGames().size() + 1;
-                String newName = "game_" + Integer.toString(count);
+                String newName = "Map " + Integer.toString(count);
 
                 // Start new game
                 Game g = new Game(newName);
@@ -123,6 +125,9 @@ public class GamesFragment extends android.support.v4.app.Fragment {
         Boolean isPlayer = args.getBoolean(ChooseRoleFragment.IsPlayer);
         if (isPlayer) {
             addnewgame.setVisibility(View.INVISIBLE);
+            view.findViewById(R.id.games_frag_bg).setBackground(new ColorDrawable(Color.parseColor("#5a6561")));
+        } else {
+            view.findViewById(R.id.games_frag_bg).setBackground(new ColorDrawable(Color.parseColor("#8d5047")));
         }
     }
 

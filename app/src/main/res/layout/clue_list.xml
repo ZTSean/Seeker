@@ -2,7 +2,10 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+    android:layout_height="fill_parent"
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp"
+    android:gravity="center">
 
     <!--
         Clue Brief info showing on the screen:
@@ -14,13 +17,19 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/hint"/>
+        android:id="@+id/hint"
+        android:textSize="25dp"
+        android:textColor="@color/white"
+        android:layout_gravity="center"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/spot_name"
-        android:layout_below="@id/hint"/>
+        android:layout_below="@id/hint"
+        android:textSize="10dp"
+        android:textColor="@color/white"
+        android:gravity="center"/>
 
 
 </RelativeLayout>

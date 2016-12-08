@@ -2,70 +2,78 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/login_background"
     android:orientation="vertical">
 
     <ImageView
         android:id="@+id/login_icon"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_width="90dp"
+        android:layout_height="60dp"
+        android:src="@drawable/seekerlogo"
+        android:layout_marginTop="50dp"
+        android:layout_marginLeft="150dp"/>
 
 
     <EditText
         android:hint="Username:"
+        android:fontFamily="sans-serif"
+        android:paddingLeft="10dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:id="@+id/username"
-        android:textSize="24sp"/>
+        android:textSize="24sp"
+        android:background="@color/white_50"/>
 
     <EditText
         android:hint="Password:"
+        android:fontFamily="sans-serif"
+        android:paddingLeft="10dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:id="@+id/password"
+        android:background="@color/white_50"
         android:textSize="24sp"/>
 
     <Button
         android:text="Login"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="250dp"
+        android:layout_height="50dp"
+        android:background="@drawable/rounded_button_1"
         android:id="@+id/login_button"
-        android:textStyle="normal|bold"
+        android:textStyle="normal"
         android:textAlignment="center"
-        android:textSize="24sp"
         android:layout_marginBottom="10dp"
-        android:layout_marginEnd="20dp"
-        android:paddingBottom="20dp"
-        android:paddingTop="20dp"
+        android:layout_gravity="center"
         android:layout_marginTop="10dp"
-        android:layout_marginStart="20dp"
-        android:fontFamily="casual" />
+        android:fontFamily="sans-serif" />
 
     <Button
-        android:text="Login Via Facebook"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:text="Facebook"
+        android:layout_width="250dp"
+        android:layout_height="50dp"
+        android:background="@drawable/rounded_button_fb"
         android:id="@+id/facebook_login_button"
-        android:textStyle="normal|bold"
+        android:textStyle="normal"
         android:textAlignment="center"
-        android:textSize="24sp"
         android:layout_marginBottom="10dp"
-        android:layout_marginEnd="20dp"
-        android:paddingBottom="20dp"
-        android:paddingTop="20dp"
+        android:layout_gravity="center"
         android:layout_marginTop="10dp"
-        android:layout_marginStart="20dp"
-        android:fontFamily="casual" />
+        android:fontFamily="sans-serif" />
 
     <TextView
         android:id="@+id/forget_password"
         android:text="Forget your password?"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:gravity="center"/>
 
     <TextView
         android:id="@+id/sign_up"
         android:text="Sign Up"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:textColor="@color/white"
+        android:gravity="center"/>
 
 </LinearLayout>

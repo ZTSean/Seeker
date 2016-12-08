@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
+    android:fitsSystemWindows="true"
+    android:background="@drawable/new_game_bg">
 
     <LinearLayout
         android:orientation="vertical"
@@ -15,9 +16,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/Instruction"
-            android:textSize="24sp"
+            android:textSize="20sp"
             android:textStyle="normal|bold"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center"/>
 
         <ListView
             android:layout_width="match_parent"

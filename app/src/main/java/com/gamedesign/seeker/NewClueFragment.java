@@ -250,8 +250,8 @@ public class NewClueFragment extends android.support.v4.app.Fragment {
         Place placePicked = PlacePicker.getPlace(getContext(), data);
         if (placePicked != null) {
             String spotname = placePicked.getName().toString();
-            String spotlat = Double.toString(placePicked.getLatLng().latitude);
-            String spotlng = Double.toString(placePicked.getLatLng().longitude);
+            String spotlat = String.format("%.4f", placePicked.getLatLng().latitude);
+            String spotlng = String.format("%.4f", placePicked.getLatLng().longitude);
             String spotaddr = placePicked.getAddress().toString();
 
             clue.setSpot_name(spotname);
@@ -261,11 +261,14 @@ public class NewClueFragment extends android.support.v4.app.Fragment {
 
             View v = getView();
             TextView spotName = (TextView) v.findViewById(R.id.spot_name);
-            spotName.setText(spotname);
+            String sn = "Name: " + spotname;
+            spotName.setText(sn);
             TextView spotAddr = (TextView) v.findViewById(R.id.spot_addr);
-            spotAddr.setText(spotaddr);
+            String sad = "Address: "+ spotaddr;
+            spotAddr.setText(sad);
             TextView latlng = (TextView) v.findViewById(R.id.spot_lat_and_long);
-            latlng.setText(spotlat + ", " + spotlng);
+            String lat_lng = String.format("Latitude: %s \n Longitude: %s", spotlat, spotlng);
+            latlng.setText(lat_lng);
 
             Log.d("ClueWrite", "update location information for clue.");
         } else {
@@ -315,7 +318,7 @@ public class NewClueFragment extends android.support.v4.app.Fragment {
         {
             Log.d("33333333333", imageUri.getPath());
             bitmap = android.provider.MediaStore.Images.Media.getBitmap(cr, imageUri);
-            //imageView.setImageBitmap(bitmap);
+            imageView.setImageBitmap(bitmap);
         }
         catch (Exception e)
         {

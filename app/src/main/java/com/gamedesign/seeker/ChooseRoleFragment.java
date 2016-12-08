@@ -1,9 +1,12 @@
 package com.gamedesign.seeker;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,12 +44,14 @@ public class ChooseRoleFragment extends Fragment {
                 args.putBoolean(IsPlayer, false);
                 tmp.setArguments(args);
                 ft.replace(R.id.fragment, tmp).addToBackStack(null).commit();
+                ((AppCompatActivity) getActivity()).getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#8d5047")));
+
             }
         });
 
         // Add click listener to change to receiver mode
-        Button receiver = (Button) view.findViewById(R.id.receiver);
-        receiver.setOnClickListener(new View.OnClickListener() {
+        Button player = (Button) view.findViewById(R.id.receiver);
+        player.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -54,6 +59,7 @@ public class ChooseRoleFragment extends Fragment {
                 args.putBoolean(IsPlayer, true);
                 tmp.setArguments(args);
                 ft.replace(R.id.fragment, tmp).addToBackStack(null).commit();
+                ((AppCompatActivity) getActivity()).getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#5a6561")));
             }
         });
     }

@@ -39,7 +39,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        android:background="@android:color/holo_blue_light">
+        android:background="@drawable/map_01">
 
         <TextView
             android:id="@+id/game_name_swipe"

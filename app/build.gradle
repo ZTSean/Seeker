@@ -5,7 +5,7 @@ android {
     buildToolsVersion "24.0.3"
     defaultConfig {
         applicationId "com.gamedesign.seeker"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
@@ -47,4 +47,6 @@ dependencies {
     testCompile 'junit:junit:4.12'
 
     //compile project(':aRBaseLib-debug')
+
+    compile 'com.google.android.gms:play-services:10.0.1'
 }

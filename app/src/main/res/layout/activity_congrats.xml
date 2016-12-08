@@ -8,36 +8,38 @@
     <include layout="@layout/toolbar"/>
 
     <TextView
-        android:text="Solve your clue!"
+        android:text="Congratulations!"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/solve_instruct"
+        android:id="@+id/finish_prompt"
         android:textColor="@color/white"
         android:layout_marginTop="70dp"
+        android:textSize="40dp"
         android:layout_gravity="center"
+        android:fontFamily="sans-serif"
         android:textAppearance="?android:attr/textAppearanceMedium"/>
 
-    <EditText
-        android:hint="Enter you answer"
+    <TextView
+        android:hint="You completed your game!"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="wrap_content"
         android:textColor="@color/white"
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginBottom="10dp"
-        android:padding="50dp"
-        android:background="@drawable/rounded_button_text"
-        android:id="@+id/answer"/>
-    
+        android:background="@color/white_50"
+        android:layout_marginTop="20dp"
+        android:textSize="24sp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:gravity="center"
+        android:id="@+id/hint"/>
+
     <Button
-        android:text="Submit"
+        android:text="Done"
+        android:id="@+id/done_game"
         android:layout_gravity="center"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="100dp"
         android:layout_width="120dp"
         android:layout_height="40dp"
         style="@style/Widget.AppCompat.Button.Borderless"
-        android:background="@drawable/rounded_button_1"
-        android:id="@+id/submit_button" />
+        android:background="@drawable/rounded_button_1" />
 
 </LinearLayout>

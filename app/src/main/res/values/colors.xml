@@ -8,4 +8,11 @@
     <color name="floating_primary">#DA4336</color>
     <color name="floating_primary_pressed">#E75043</color>
     <color name="floating_ripple">#99FFFFFF</color>
+    <color name="white_50">#80FFFFFF</color>
+    <color name="white">#FFFFFF</color>
+    <color name="brown">#8d5047</color>
+    <color name="grey">#5a6561</color>
+    <color name="black">#000000</color>
+    <color name="skin">#E6E2C9</color>
+    <color name="clue_icon_brown">#80908067</color>
 </resources>
